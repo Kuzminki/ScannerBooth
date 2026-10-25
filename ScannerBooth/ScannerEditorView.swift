@@ -1,7 +1,13 @@
 import AppKit
+import OSLog
 import SwiftUI
 
 struct ScannerEditorView: View {
+    private static let pdfExportLogger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "com.guilhem.ScannerBooth",
+        category: "PDFExport"
+    )
+
     let photo: PhotoEntry
     let onBack: () -> Void
 
@@ -12,12 +18,9 @@ struct ScannerEditorView: View {
     @State private var selectedFilter: ScanFilter = .doc
     @State private var isLoading = true
     @State private var isProcessing = false
-    @State private var isPreparingExport = false
     @State private var isDirty = false
     @State private var errorMessage: String?
     @State private var alertTitle = "ScannerBooth"
-    @State private var pdfDocument = ScanPDFDocument(data: Data())
-    @State private var isShowingExporter = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,12 +34,13 @@ struct ScannerEditorView: View {
                     .lineLimit(1)
                 Spacer()
                 Button {
-                    preparePDFExport()
+                    Self.pdfExportLogger.info("PDF export button action received")
+                    beginPDFExport()
                 } label: {
-                    Label(isPreparingExport ? "Préparation du PDF…" : "Enregistrer le PDF…", systemImage: "square.and.arrow.down")
+                    Label("Enregistrer le PDF…", systemImage: "square.and.arrow.down")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(processedImage == nil || isProcessing || isLoading || isPreparingExport || isShowingExporter)
+                .disabled(processedImage == nil || isProcessing || isLoading)
             }
             .padding(.horizontal, 18)
             .padding(.vertical, 12)
@@ -63,7 +67,6 @@ struct ScannerEditorView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(Color(nsColor: .underPageBackgroundColor), in: RoundedRectangle(cornerRadius: 10))
-                        .allowsHitTesting(!isPreparingExport)
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
@@ -99,7 +102,7 @@ struct ScannerEditorView: View {
                         }
                         .pickerStyle(.segmented)
                         .labelsHidden()
-                        .disabled(isLoading || isProcessing || isPreparingExport)
+                        .disabled(isLoading || isProcessing)
                     }
                 }
                 .padding(16)
@@ -111,7 +114,7 @@ struct ScannerEditorView: View {
                         quad = automaticQuad ?? .imageBounds
                         isDirty = true
                     }
-                    .disabled(isProcessing || isPreparingExport)
+                    .disabled(isProcessing)
                     Spacer()
                     if isProcessing {
                         ProgressView().controlSize(.small)
@@ -123,7 +126,7 @@ struct ScannerEditorView: View {
                         Label("Actualiser l’aperçu", systemImage: "arrow.clockwise")
                     }
                     .buttonStyle(.bordered)
-                    .disabled(!isDirty || isProcessing || isPreparingExport)
+                    .disabled(!isDirty || isProcessing)
                 }
                 .padding(14)
             } else {
@@ -143,25 +146,14 @@ struct ScannerEditorView: View {
             guard !isLoading else { return }
             updatePreview(using: filter)
         }
-        .fileExporter(
-            isPresented: $isShowingExporter,
-            document: pdfDocument,
-            contentType: .pdf,
-            defaultFilename: "\(photo.title)_scan"
-        ) { result in
-            switch result {
-            case .success(let url):
-                alertTitle = "PDF enregistré"
-                errorMessage = "Le document a été enregistré dans \(url.lastPathComponent)."
-            case .failure(let error):
-                let nsError = error as NSError
-                let isCancellation = error is CancellationError
-                    || (error as? CocoaError)?.code == .userCancelled
-                    || nsError.code == NSUserCancelledError
-                guard !isCancellation else { return }
-                alertTitle = "Échec de l’enregistrement"
-                errorMessage = error.localizedDescription
-            }
+        .onChange(of: isLoading) { _, _ in
+            logExportAvailability(after: "loading state changed")
+        }
+        .onChange(of: isProcessing) { _, _ in
+            logExportAvailability(after: "processing state changed")
+        }
+        .onChange(of: processedImage != nil) { _, _ in
+            logExportAvailability(after: "preview availability changed")
         }
         .alert(alertTitle, isPresented: errorAlertPresented) {
             Button("OK", role: .cancel) { errorMessage = nil }
@@ -214,42 +206,110 @@ struct ScannerEditorView: View {
         }
     }
 
-    private func preparePDFExport() {
+    private func beginPDFExport() {
+        Self.pdfExportLogger.info(
+            "Preparing PDF save panel; isLoading=\(isLoading, privacy: .public), isProcessing=\(isProcessing, privacy: .public), hasPreview=\(processedImage != nil, privacy: .public)"
+        )
+
         guard let sourceImage else {
+            Self.pdfExportLogger.error("Cannot export PDF because the source image is unavailable")
             alertTitle = "Aucun aperçu à exporter"
             errorMessage = "La photo source n’est pas disponible pour préparer le PDF."
             return
         }
 
-        let existingPreview = processedImage
-        let shouldRefreshPreview = isDirty || existingPreview == nil
-        let selectedQuad = quad
-        let filter = selectedFilter
-        isPreparingExport = true
+        let panel = NSOpenPanel()
+        panel.title = "Choisir le dossier du PDF"
+        panel.message = "Sélectionnez le dossier de destination du scan PDF."
+        panel.prompt = "Enregistrer ici"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        Self.pdfExportLogger.info("NSOpenPanel configured to choose a PDF destination folder")
+
+        let keyWindowAvailable = NSApp.keyWindow != nil
+        let mainWindowAvailable = NSApp.mainWindow != nil
+        let visibleWindowCount = NSApp.windows.filter { $0.isVisible }.count
+        Self.pdfExportLogger.info(
+            "Window state before presentation; keyWindow=\(keyWindowAvailable, privacy: .public), mainWindow=\(mainWindowAvailable, privacy: .public), visibleWindowCount=\(visibleWindowCount, privacy: .public)"
+        )
+
+        NSApp.activate(ignoringOtherApps: true)
+        Self.pdfExportLogger.info("Presenting NSOpenPanel with runModal")
+        let response = panel.runModal()
+        Self.pdfExportLogger.info("NSOpenPanel.runModal returned response rawValue=\(response.rawValue, privacy: .public)")
+        guard response == .OK else {
+            Self.pdfExportLogger.info("PDF destination folder selection cancelled")
+            return
+        }
+
+        guard let destinationFolder = panel.url else {
+            Self.pdfExportLogger.error("Destination folder picker returned OK without a URL")
+            alertTitle = "Échec de l’enregistrement"
+            errorMessage = "Aucun dossier de destination n’a été retourné par la fenêtre de sélection."
+            return
+        }
+        guard destinationFolder.startAccessingSecurityScopedResource() else {
+            Self.pdfExportLogger.error("Could not obtain sandbox access to the selected destination folder")
+            alertTitle = "Accès au dossier refusé"
+            errorMessage = "L’app n’a pas obtenu l’autorisation d’écrire dans ce dossier. Choisissez un autre dossier."
+            return
+        }
+
+        let destination = uniquePDFDestination(in: destinationFolder)
+        Self.pdfExportLogger.info("Destination folder access granted; starting PDF processing")
+        exportPDF(to: destination, from: sourceImage, using: quad, filter: selectedFilter, destinationFolder: destinationFolder)
+    }
+
+    private func uniquePDFDestination(in folder: URL) -> URL {
+        let baseName = "\(photo.title)_scan"
+        var suffix = 1
+        while true {
+            let fileName = suffix == 1 ? "\(baseName).pdf" : "\(baseName)_\(suffix).pdf"
+            let candidate = folder.appendingPathComponent(fileName, isDirectory: false)
+            if !FileManager.default.fileExists(atPath: candidate.path) { return candidate }
+            suffix += 1
+        }
+    }
+
+    private func exportPDF(
+        to destination: URL,
+        from sourceImage: CGImage,
+        using quad: DocumentQuad,
+        filter: ScanFilter,
+        destinationFolder: URL
+    ) {
+        Self.pdfExportLogger.info("PDF processing and writing started; filter=\(filter.rawValue, privacy: .public)")
+        isProcessing = true
         Task {
+            defer { destinationFolder.stopAccessingSecurityScopedResource() }
             do {
-                let result = try await Task.detached(priority: .userInitiated) {
-                    let outputImage: CGImage
-                    if shouldRefreshPreview {
-                        outputImage = try ScanImageProcessor.process(sourceImage, using: selectedQuad, filter: filter)
-                    } else if let existingPreview {
-                        outputImage = existingPreview
-                    } else {
-                        throw CocoaError(.fileReadUnknown)
-                    }
-                    let pdfData = try PDFExporter.makePDFData(image: outputImage)
-                    return (outputImage, pdfData)
+                try await Task.detached(priority: .userInitiated) {
+                    let corrected = try ScanImageProcessor.process(sourceImage, using: quad, filter: filter)
+                    try PDFExporter.write(image: corrected, to: destination)
                 }.value
-                processedImage = result.0
-                isDirty = false
-                pdfDocument = ScanPDFDocument(data: result.1)
-                isShowingExporter = true
+                Self.pdfExportLogger.info("PDF processing and writing completed successfully")
+                alertTitle = "PDF enregistré"
+                errorMessage = "Le document a été enregistré dans \(destination.lastPathComponent)."
             } catch {
-                alertTitle = "Échec de la préparation du PDF"
+                let nsError = error as NSError
+                Self.pdfExportLogger.error(
+                    "PDF processing or writing failed; domain=\(nsError.domain, privacy: .public), code=\(nsError.code, privacy: .public)"
+                )
+                alertTitle = "Échec de l’enregistrement"
                 errorMessage = error.localizedDescription
             }
-            isPreparingExport = false
+            isProcessing = false
         }
+    }
+
+    private func logExportAvailability(after event: String) {
+        let isEnabled = processedImage != nil && !isProcessing && !isLoading
+        Self.pdfExportLogger.info(
+            "Export control state after \(event, privacy: .public); enabled=\(isEnabled, privacy: .public), hasPreview=\(processedImage != nil, privacy: .public), isLoading=\(isLoading, privacy: .public), isProcessing=\(isProcessing, privacy: .public)"
+        )
     }
 
     private var errorAlertPresented: Binding<Bool> {

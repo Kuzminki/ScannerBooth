@@ -1,6 +1,5 @@
 import CoreGraphics
-import SwiftUI
-import UniformTypeIdentifiers
+import Foundation
 
 enum PDFExporter {
     static func makePDFData(image: CGImage) throws -> Data {
@@ -24,23 +23,5 @@ enum PDFExporter {
 
     static func write(image: CGImage, to url: URL) throws {
         try makePDFData(image: image).write(to: url, options: .atomic)
-    }
-}
-
-struct ScanPDFDocument: FileDocument {
-    static var readableContentTypes: [UTType] { [.pdf] }
-
-    let data: Data
-
-    init(data: Data) {
-        self.data = data
-    }
-
-    init(configuration: ReadConfiguration) throws {
-        data = configuration.file.regularFileContents ?? Data()
-    }
-
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        FileWrapper(regularFileWithContents: data)
     }
 }
