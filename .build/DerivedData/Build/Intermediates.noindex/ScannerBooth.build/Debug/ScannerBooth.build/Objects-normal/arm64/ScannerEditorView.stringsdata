@@ -1,0 +1,144 @@
+{
+  "source": "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/ScannerEditorView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Détection et redressement du document…",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 48
+        }
+      },
+      {
+        "comment": "",
+        "key": "Photothèque",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 26
+        }
+      },
+      {
+        "comment": "",
+        "key": "Préparation du PDF…",
+        "location": {
+          "startingColumn": 47,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enregistrer le PDF…",
+        "location": {
+          "startingColumn": 74,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cadrage",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 53
+        }
+      },
+      {
+        "comment": "",
+        "key": "Aucun document détecté automatiquement. Déplacez les quatre poignées pour cadrer la page.",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 56
+        }
+      },
+      {
+        "comment": "",
+        "key": "Ajustez les quatre poignées si nécessaire, puis actualisez l’aperçu.",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 57
+        }
+      },
+      {
+        "comment": "",
+        "key": "Aperçu du scan",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 70
+        }
+      },
+      {
+        "comment": "",
+        "key": "Filtre",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 95
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mettez à jour l’aperçu après le cadrage",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 84
+        }
+      },
+      {
+        "comment": "",
+        "key": "Aucun aperçu",
+        "location": {
+          "startingColumn": 56,
+          "startingLine": 90
+        }
+      },
+      {
+        "comment": "",
+        "key": "Traitement…",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "Réinitialiser le cadrage",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 110
+        }
+      },
+      {
+        "comment": "",
+        "key": "Actualiser l’aperçu",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 123
+        }
+      },
+      {
+        "comment": "",
+        "key": "Impossible d’ouvrir la photo",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 131
+        }
+      },
+      {
+        "comment": "",
+        "key": "Retour à la photothèque",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 135
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 167
+        }
+      }
+    ]
+  },
+  "version": 1
+}

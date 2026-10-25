@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"window.titleBarStyle": "custom",
+		"workbench.colorCustomizations": {
+			"titleBar.activeBackground": "#8B0000",
+			"titleBar.activeForeground": "#FFFFFF",
+			"titleBar.inactiveBackground": "#5C0000",
+			"titleBar.inactiveForeground": "#FFF7F0",
+			"statusBar.background": "#5C0000",
+			"statusBar.foreground": "#FFF7F0",
+			"statusBar.border": "#8B0000",
+			"sideBar.border": "#8B0000",
+			"panel.border": "#8B0000",
+			"editorGroup.border": "#8B0000"
+		}
+	}
+}

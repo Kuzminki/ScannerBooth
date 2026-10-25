@@ -1,0 +1,79 @@
+{
+  "" : {
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBooth-primary.dia",
+    "emit-module-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBooth-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBooth-primary-emit-module.dia",
+    "pch" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBooth-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBooth-primary.swiftdeps"
+  },
+  "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/LibraryView.swift" : {
+    "const-values" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView.swiftconstvalues",
+    "dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView.d",
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView.dia",
+    "index-unit-output-path" : "/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView.o",
+    "llvm-bc" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView.bc",
+    "object" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView.o",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView.swiftdeps",
+    "swiftmodule" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/LibraryView~partial.swiftmodule"
+  },
+  "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/PDFExporter.swift" : {
+    "const-values" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter.swiftconstvalues",
+    "dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter.d",
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter.dia",
+    "index-unit-output-path" : "/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter.o",
+    "llvm-bc" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter.bc",
+    "object" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter.o",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter.swiftdeps",
+    "swiftmodule" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PDFExporter~partial.swiftmodule"
+  },
+  "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/PhotoBoothLibrary.swift" : {
+    "const-values" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary.swiftconstvalues",
+    "dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary.d",
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary.dia",
+    "index-unit-output-path" : "/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary.o",
+    "llvm-bc" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary.bc",
+    "object" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary.o",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary.swiftdeps",
+    "swiftmodule" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/PhotoBoothLibrary~partial.swiftmodule"
+  },
+  "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/ScanGeometry.swift" : {
+    "const-values" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry.swiftconstvalues",
+    "dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry.d",
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry.dia",
+    "index-unit-output-path" : "/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry.o",
+    "llvm-bc" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry.bc",
+    "object" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry.o",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry.swiftdeps",
+    "swiftmodule" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanGeometry~partial.swiftmodule"
+  },
+  "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/ScanImageProcessor.swift" : {
+    "const-values" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor.swiftconstvalues",
+    "dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor.d",
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor.dia",
+    "index-unit-output-path" : "/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor.o",
+    "llvm-bc" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor.bc",
+    "object" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor.o",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor.swiftdeps",
+    "swiftmodule" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScanImageProcessor~partial.swiftmodule"
+  },
+  "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/ScannerBoothApp.swift" : {
+    "const-values" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp.swiftconstvalues",
+    "dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp.d",
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp.dia",
+    "index-unit-output-path" : "/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp.o",
+    "llvm-bc" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp.bc",
+    "object" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp.o",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp.swiftdeps",
+    "swiftmodule" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerBoothApp~partial.swiftmodule"
+  },
+  "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/ScannerBooth/ScannerEditorView.swift" : {
+    "const-values" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView.swiftconstvalues",
+    "dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView.d",
+    "diagnostics" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView.dia",
+    "index-unit-output-path" : "/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView.o",
+    "llvm-bc" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView.bc",
+    "object" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView.o",
+    "swift-dependencies" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView.swiftdeps",
+    "swiftmodule" : "/Users/guilhem.putz.e/Documents/1_Programs-Perso/ScannerBooth/.build/DerivedData/Build/Intermediates.noindex/ScannerBooth.build/Debug/ScannerBooth.build/Objects-normal/arm64/ScannerEditorView~partial.swiftmodule"
+  }
+}

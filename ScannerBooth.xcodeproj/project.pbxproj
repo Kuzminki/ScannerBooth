@@ -1,0 +1,135 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* ScannerBoothApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* ScannerBoothApp.swift */; };
+		A10000000000000000000002 /* PhotoBoothLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* PhotoBoothLibrary.swift */; };
+		A10000000000000000000003 /* ScanGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* ScanGeometry.swift */; };
+		A10000000000000000000004 /* ScanImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* ScanImageProcessor.swift */; };
+		A10000000000000000000005 /* PDFExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* PDFExporter.swift */; };
+		A10000000000000000000006 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* LibraryView.swift */; };
+		A10000000000000000000007 /* ScannerEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* ScannerEditorView.swift */; };
+		A10000000000000000000008 /* ScannerBoothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* ScannerBoothTests.swift */; };
+		A10000000000000000000009 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* XCTest.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C10000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10000000000000000000001;
+			remoteInfo = ScannerBooth;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B10000000000000000000001 /* ScannerBoothApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerBoothApp.swift; sourceTree = "<group>"; };
+		B10000000000000000000002 /* PhotoBoothLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBoothLibrary.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* ScanGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanGeometry.swift; sourceTree = "<group>"; };
+		B10000000000000000000004 /* ScanImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanImageProcessor.swift; sourceTree = "<group>"; };
+		B10000000000000000000005 /* PDFExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFExporter.swift; sourceTree = "<group>"; };
+		B10000000000000000000006 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		B10000000000000000000007 /* ScannerEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerEditorView.swift; sourceTree = "<group>"; };
+		B10000000000000000000008 /* ScannerBoothTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerBoothTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000009 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		B1000000000000000000000A /* ScannerBooth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScannerBooth.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1000000000000000000000B /* ScannerBoothTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScannerBoothTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F10000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		F10000000000000000000002 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000009 /* XCTest.framework in Frameworks */,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G10000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				G10000000000000000000002 /* ScannerBooth */,
+				G10000000000000000000003 /* ScannerBoothTests */,
+				G10000000000000000000004 /* Frameworks */,
+				G10000000000000000000005 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G10000000000000000000002 /* ScannerBooth */ = {isa = PBXGroup; path = ScannerBooth; sourceTree = "<group>"; children = (B10000000000000000000001, B10000000000000000000002, B10000000000000000000003, B10000000000000000000004, B10000000000000000000005, B10000000000000000000006, B10000000000000000000007,); };
+		G10000000000000000000003 /* ScannerBoothTests */ = {isa = PBXGroup; path = ScannerBoothTests; sourceTree = "<group>"; children = (B10000000000000000000008,); };
+		G10000000000000000000004 /* Frameworks */ = {isa = PBXGroup; children = (B10000000000000000000009 /* XCTest.framework */,); name = Frameworks; sourceTree = "<group>"; };
+		G10000000000000000000005 /* Products */ = {isa = PBXGroup; name = Products; sourceTree = "<group>"; children = (B1000000000000000000000A /* ScannerBooth.app */, B1000000000000000000000B /* ScannerBoothTests.xctest */,); };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E10000000000000000000001 /* ScannerBooth */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = H10000000000000000000001 /* Build configuration list for PBXNativeTarget "ScannerBooth" */;
+			buildPhases = (F10000000000000000000003 /* Sources */, F10000000000000000000001 /* Frameworks */, F10000000000000000000004 /* Resources */,);
+			buildRules = ();
+			dependencies = ();
+			name = ScannerBooth;
+			productName = ScannerBooth;
+			productReference = B1000000000000000000000A /* ScannerBooth.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E10000000000000000000002 /* ScannerBoothTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = H10000000000000000000002 /* Build configuration list for PBXNativeTarget "ScannerBoothTests" */;
+			buildPhases = (F10000000000000000000005 /* Sources */, F10000000000000000000002 /* Frameworks */, F10000000000000000000006 /* Resources */,);
+			buildRules = ();
+			dependencies = (C10000000000000000000002 /* PBXTargetDependency */,);
+			name = ScannerBoothTests;
+			productName = ScannerBoothTests;
+			productReference = B1000000000000000000000B /* ScannerBoothTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D10000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = { BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2700; LastUpgradeCheck = 2700; TargetAttributes = { E10000000000000000000001 = { CreatedOnToolsVersion = 27.0; }; E10000000000000000000002 = { CreatedOnToolsVersion = 27.0; TestTargetID = E10000000000000000000001; }; }; };
+			buildConfigurationList = H10000000000000000000003 /* Build configuration list for PBXProject "ScannerBooth" */;
+			compatibilityVersion = "Xcode 14.0";
+			mainGroup = G10000000000000000000001;
+			productRefGroup = G10000000000000000000005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (E10000000000000000000001 /* ScannerBooth */, E10000000000000000000002 /* ScannerBoothTests */,);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F10000000000000000000004 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		F10000000000000000000006 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F10000000000000000000003 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004, A10000000000000000000005, A10000000000000000000006, A10000000000000000000007,); runOnlyForDeploymentPostprocessing = 0; };
+		F10000000000000000000005 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000008,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C10000000000000000000002 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = E10000000000000000000001 /* ScannerBooth */; targetProxy = C10000000000000000000001 /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		I10000000000000000000001 /* Debug app */ = {isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_ENTITLEMENTS = ScannerBooth/ScannerBooth.entitlements; CODE_SIGN_STYLE = Automatic; ENABLE_APP_SANDBOX = YES; ENABLE_HARDENED_RUNTIME = YES; ENABLE_TESTABILITY = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity"; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.guilhem.ScannerBooth; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = macosx; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 6.0; }; name = Debug; };
+		I10000000000000000000002 /* Release app */ = {isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_ENTITLEMENTS = ScannerBooth/ScannerBooth.entitlements; CODE_SIGN_STYLE = Automatic; ENABLE_APP_SANDBOX = YES; ENABLE_HARDENED_RUNTIME = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity"; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.guilhem.ScannerBooth; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = macosx; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 6.0; }; name = Release; };
+		I10000000000000000000003 /* Debug tests */ = {isa = XCBuildConfiguration; buildSettings = { BUNDLE_LOADER = "$(TEST_HOST)"; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.guilhem.ScannerBoothTests; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = macosx; SWIFT_VERSION = 6.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScannerBooth.app/Contents/MacOS/ScannerBooth"; TEST_TARGET_NAME = ScannerBooth; }; name = Debug; };
+		I10000000000000000000004 /* Release tests */ = {isa = XCBuildConfiguration; buildSettings = { BUNDLE_LOADER = "$(TEST_HOST)"; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.guilhem.ScannerBoothTests; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = macosx; SWIFT_VERSION = 6.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScannerBooth.app/Contents/MacOS/ScannerBooth"; TEST_TARGET_NAME = ScannerBooth; }; name = Release; };
+		I10000000000000000000005 /* Debug project */ = {isa = XCBuildConfiguration; buildSettings = { MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_VERSION = 6.0; }; name = Debug; };
+		I10000000000000000000006 /* Release project */ = {isa = XCBuildConfiguration; buildSettings = { MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_VERSION = 6.0; }; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		H10000000000000000000001 /* Build configuration list for PBXNativeTarget "ScannerBooth" */ = {isa = XCConfigurationList; buildConfigurations = (I10000000000000000000001 /* Debug app */, I10000000000000000000002 /* Release app */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		H10000000000000000000002 /* Build configuration list for PBXNativeTarget "ScannerBoothTests" */ = {isa = XCConfigurationList; buildConfigurations = (I10000000000000000000003 /* Debug tests */, I10000000000000000000004 /* Release tests */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		H10000000000000000000003 /* Build configuration list for PBXProject "ScannerBooth" */ = {isa = XCConfigurationList; buildConfigurations = (I10000000000000000000005 /* Debug project */, I10000000000000000000006 /* Release project */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = D10000000000000000000001 /* Project object */;
+}
