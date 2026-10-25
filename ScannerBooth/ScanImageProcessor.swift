@@ -1,6 +1,7 @@
 import CoreImage
 import CoreImage.CIFilterBuiltins
 import ImageIO
+import OSLog
 import Vision
 
 enum ScanFilter: String, CaseIterable, Identifiable, Sendable {
@@ -35,6 +36,20 @@ enum ScanProcessingFailure: LocalizedError {
 
 enum ScanImageProcessor {
     private static let context = CIContext()
+    private static let paperWhiteningKernel = CIColorKernel(source: """
+    kernel vec4 whitenPaper(__sample pixel, float strength) {
+        float luminance = dot(pixel.rgb, vec3(0.2126, 0.7152, 0.0722));
+        float level = clamp((luminance - 0.48) / 0.42, 0.0, 1.0);
+        float mask = level * level * (3.0 - 2.0 * level);
+        float lift = strength * mask;
+        vec3 whitened = pixel.rgb + (vec3(1.0) - pixel.rgb) * lift;
+        return vec4(whitened, pixel.a);
+    }
+    """)
+    private static let detectionLogger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "com.guilhem.ScannerBooth",
+        category: "DocumentDetection"
+    )
 
     static func loadImage(at url: URL) throws -> CGImage {
         guard let source = CGImageSourceCreateWithURL(url as CFURL, nil),
@@ -49,29 +64,69 @@ enum ScanImageProcessor {
 
     static func detectDocument(in image: CGImage) throws -> DocumentQuad? {
         let request = VNDetectRectanglesRequest()
-        request.maximumObservations = 20
-        request.minimumConfidence = 0.35
-        request.minimumSize = 0.15
+        request.maximumObservations = 100
+        request.minimumConfidence = 0.15
+        request.minimumSize = 0.08
         request.quadratureTolerance = 45
         try VNImageRequestHandler(cgImage: image, orientation: .up).perform([request])
 
-        let candidates = (request.results ?? []).compactMap { observation -> (DocumentQuad, CGFloat)? in
+        let observations = request.results ?? []
+        let minimumPageArea: CGFloat = 0.07
+        let maximumPageArea: CGFloat = 0.90
+        var largestObservedArea: CGFloat = 0
+        let candidates = observations.compactMap { observation -> (quad: DocumentQuad, confidence: CGFloat, area: CGFloat, score: CGFloat)? in
             let quad = DocumentQuad(
                 topLeft: imagePoint(fromVision: observation.topLeft),
                 topRight: imagePoint(fromVision: observation.topRight),
                 bottomRight: imagePoint(fromVision: observation.bottomRight),
                 bottomLeft: imagePoint(fromVision: observation.bottomLeft)
             )
+            let area = quad.area
             guard quad.isValid else { return nil }
-            return (quad, CGFloat(observation.confidence) * sqrt(quad.area))
+            largestObservedArea = max(largestObservedArea, area)
+            guard area >= minimumPageArea, area <= maximumPageArea else { return nil }
+
+            func pixelDistance(_ first: NormalizedPoint, _ second: NormalizedPoint) -> CGFloat {
+                hypot(
+                    (first.x - second.x) * CGFloat(image.width),
+                    (first.y - second.y) * CGFloat(image.height)
+                )
+            }
+
+            let width = (pixelDistance(quad.topLeft, quad.topRight) + pixelDistance(quad.bottomLeft, quad.bottomRight)) / 2
+            let height = (pixelDistance(quad.topLeft, quad.bottomLeft) + pixelDistance(quad.topRight, quad.bottomRight)) / 2
+            let aspectRatio = min(width, height) / max(width, height)
+            guard aspectRatio >= 0.25 else { return nil }
+
+            let centerX = quad.points.map(\.x).reduce(0, +) / 4
+            let centerY = quad.points.map(\.y).reduce(0, +) / 4
+            let centerOffset = hypot(centerX - 0.5, centerY - 0.5)
+            let centrality = max(0.75, 1 - centerOffset * 0.35)
+            let confidence = CGFloat(observation.confidence)
+            let confidenceWeight = 0.70 + confidence * 0.30
+            let score = area * confidenceWeight * centrality
+            return (quad, confidence, area, score)
         }
-        return candidates.max(by: { $0.1 < $1.1 })?.0
+
+        detectionLogger.info(
+            "Vision rectangle results=\(observations.count, privacy: .public), plausible page candidates=\(candidates.count, privacy: .public), largest rectangle areaFraction=\(Double(largestObservedArea), privacy: .public)"
+        )
+        guard let selected = candidates.max(by: { $0.score < $1.score }) else {
+            detectionLogger.warning("No rectangle met the minimum page size and shape constraints; using manual crop")
+            return nil
+        }
+        detectionLogger.info(
+            "Selected document candidate; areaFraction=\(Double(selected.area), privacy: .public), confidence=\(Double(selected.confidence), privacy: .public)"
+        )
+        return selected.quad
     }
 
     static func process(
         _ image: CGImage,
         using quad: DocumentQuad,
-        filter: ScanFilter = .doc
+        filter: ScanFilter = .doc,
+        sharpness: Float = 0.5,
+        paperWhitening: Float = 0.5
     ) throws -> CGImage {
         guard quad.isValid else { throw ScanProcessingFailure.noPerspectiveCorrection }
         let input = CIImage(cgImage: image)
@@ -100,19 +155,34 @@ enum ScanImageProcessor {
             controls.saturation = 1.02
             controls.brightness = 0
             guard let contrasted = controls.outputImage else { throw ScanProcessingFailure.processingFailed }
-            output = try correctPaperWhite(in: contrasted, preserveColor: true)
+            let paperCorrected = try correctPaperWhite(
+                in: contrasted,
+                preserveColor: true,
+                whitening: paperWhitening
+            )
+            output = try sharpen(paperCorrected, amount: sharpness)
 
         case .gray:
             let grayscale = try grayscaleImage(corrected, contrast: 1.10)
-            output = try correctPaperWhite(in: grayscale, preserveColor: false)
+            let paperCorrected = try correctPaperWhite(
+                in: grayscale,
+                preserveColor: false,
+                whitening: paperWhitening
+            )
+            output = try sharpen(paperCorrected, amount: sharpness)
 
         case .blackAndWhite:
             let grayscale = try grayscaleImage(corrected, contrast: 1.10)
-            let paperCorrected = try correctPaperWhite(in: grayscale, preserveColor: false)
+            let paperCorrected = try correctPaperWhite(
+                in: grayscale,
+                preserveColor: false,
+                whitening: paperWhitening
+            )
+            let sharpened = try sharpen(paperCorrected, amount: sharpness)
             guard let threshold = CIFilter(name: "CIColorThresholdOtsu") else {
                 throw ScanProcessingFailure.processingFailed
             }
-            threshold.setValue(paperCorrected, forKey: kCIInputImageKey)
+            threshold.setValue(sharpened, forKey: kCIInputImageKey)
             guard let binary = threshold.outputImage else { throw ScanProcessingFailure.processingFailed }
             output = binary
         }
@@ -130,7 +200,11 @@ enum ScanImageProcessor {
         return grayscale
     }
 
-    private static func correctPaperWhite(in image: CIImage, preserveColor: Bool) throws -> CIImage {
+    private static func correctPaperWhite(
+        in image: CIImage,
+        preserveColor: Bool,
+        whitening: Float
+    ) throws -> CIImage {
         // The four corners are usually paper. Their average provides a restrained
         // per-channel white point correction without removing document color.
         let whitePoint = try averageCornerColor(of: image)
@@ -161,6 +235,26 @@ enum ScanImageProcessor {
         clamp.minComponents = CIVector(x: 0, y: 0, z: 0, w: 0)
         clamp.maxComponents = CIVector(x: 1, y: 1, z: 1, w: 1)
         guard let output = clamp.outputImage else { throw ScanProcessingFailure.processingFailed }
+
+        let strength = min(1, max(0, whitening))
+        guard strength > 0 else { return output }
+        guard let paperWhiteningKernel else { throw ScanProcessingFailure.processingFailed }
+        guard let whitened = paperWhiteningKernel.apply(
+            extent: output.extent,
+            arguments: [output, NSNumber(value: strength)]
+        ) else {
+            throw ScanProcessingFailure.processingFailed
+        }
+        return whitened
+    }
+
+    private static func sharpen(_ image: CIImage, amount: Float) throws -> CIImage {
+        let strength = min(2, max(0, amount))
+        guard strength > 0 else { return image }
+        let filter = CIFilter.sharpenLuminance()
+        filter.inputImage = image
+        filter.sharpness = strength
+        guard let output = filter.outputImage else { throw ScanProcessingFailure.processingFailed }
         return output
     }
 

@@ -6,9 +6,11 @@ Application macOS SwiftUI pour parcourir la photothèque Photo Booth, redresser 
 
 Ouvrez `ScannerBooth.xcodeproj` dans Xcode, choisissez la destination **My Mac**, puis lancez la cible `ScannerBooth`. L’application mémorise l’accès au paquet ou dossier `Photo Booth Library` choisi et lit les photos qu’il contient. Elle conserve les originaux et écrit les PDF dans le dossier sélectionné pour l’export.
 
-Dans l’écran de cadrage, faites glisser l’une des quatre poignées (zone de saisie agrandie) pour ajuster un coin. Le bouton **Actualiser l’aperçu** affiche le nouveau cadrage; si vous lancez l’export avant, le cadrage courant est recalculé automatiquement.
+Dans l’écran de cadrage, la détection privilégie les quadrilatères qui couvrent une part importante de la photo afin d’éviter les cadres internes du formulaire. Si aucun contour de page assez grand n’est trouvé, ajustez manuellement les quatre poignées (zone de saisie agrandie). Le bouton **Actualiser l’aperçu** affiche le nouveau cadrage; si vous lancez l’export avant, le cadrage courant est recalculé automatiquement.
 
 Sous l’aperçu, le sélecteur **Doc / Gray / N&B** choisit le rendu : couleur avec papier éclairci, niveaux de gris, ou noir et blanc à contraste élevé. Le changement de filtre actualise l’aperçu et s’applique au PDF exporté.
+
+Les curseurs **Netteté** et **Blancheur du papier** règlent l’accentuation des détails et l’éclaircissement non linéaire des tons clairs. Le réglage de blancheur préserve davantage le texte et les détails sombres. Les deux curseurs sont mémorisés entre les utilisations de l’application et leurs valeurs s’appliquent à l’aperçu et au PDF.
 
 Cliquez sur **Enregistrer le PDF…** pour ouvrir le dialogue d’enregistrement macOS. Le nom proposé est `<nom-de-la-photo>_scan.pdf`, et le champ reste modifiable. Choisissez aussi le dossier de destination; le cadrage et le filtre courants sont traités ensuite. Une confirmation apparaît après l’écriture.
 
@@ -24,6 +26,12 @@ Pour consulter les événements déjà enregistrés des cinq dernières minutes 
 
 ```sh
 log show --last 5m --style compact --predicate 'subsystem == "com.guilhem.ScannerBooth" AND category == "PDFExport"'
+```
+
+La détection écrit aussi le nombre de rectangles Vision retenus et la taille/confiance du cadrage choisi :
+
+```sh
+log stream --style compact --level info --predicate 'subsystem == "com.guilhem.ScannerBooth" AND category == "DocumentDetection"'
 ```
 
 La cible prend en charge macOS 14 et les versions ultérieures. Les images restent sur le Mac; l’app n’effectue pas d’OCR.

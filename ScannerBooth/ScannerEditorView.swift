@@ -16,6 +16,8 @@ struct ScannerEditorView: View {
     @State private var quad: DocumentQuad = .imageBounds
     @State private var processedImage: CGImage?
     @State private var selectedFilter: ScanFilter = .doc
+    @AppStorage("scan.sharpness") private var sharpness = 0.5
+    @AppStorage("scan.paperWhitening") private var paperWhitening = 0.5
     @State private var isLoading = true
     @State private var isProcessing = false
     @State private var isDirty = false
@@ -84,7 +86,7 @@ struct ScannerEditorView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .padding(12)
                                 if isDirty {
-                                    Text("Mettez à jour l’aperçu après le cadrage")
+                                    Text("Actualisez l’aperçu pour appliquer les changements")
                                         .font(.callout.weight(.medium))
                                         .padding(10)
                                         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
@@ -103,6 +105,34 @@ struct ScannerEditorView: View {
                         .pickerStyle(.segmented)
                         .labelsHidden()
                         .disabled(isLoading || isProcessing)
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("Netteté")
+                                Spacer()
+                                Text(sharpness.formatted(.number.precision(.fractionLength(1))))
+                                    .monospacedDigit()
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $sharpness, in: 0...2, onEditingChanged: { isEditing in
+                                if !isEditing { updatePreview() }
+                            })
+                            .accessibilityLabel("Netteté")
+                            .disabled(isLoading || isProcessing)
+
+                            HStack {
+                                Text("Blancheur du papier")
+                                Spacer()
+                                Text(paperWhitening.formatted(.percent.precision(.fractionLength(0))))
+                                    .monospacedDigit()
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $paperWhitening, in: 0...1, onEditingChanged: { isEditing in
+                                if !isEditing { updatePreview() }
+                            })
+                            .accessibilityLabel("Blancheur du papier")
+                            .disabled(isLoading || isProcessing)
+                        }
                     }
                 }
                 .padding(16)
@@ -146,6 +176,12 @@ struct ScannerEditorView: View {
             guard !isLoading else { return }
             updatePreview(using: filter)
         }
+        .onChange(of: sharpness) { _, _ in
+            isDirty = true
+        }
+        .onChange(of: paperWhitening) { _, _ in
+            isDirty = true
+        }
         .onChange(of: isLoading) { _, _ in
             logExportAvailability(after: "loading state changed")
         }
@@ -167,11 +203,19 @@ struct ScannerEditorView: View {
         do {
             let url = photo.url
             let filter = selectedFilter
+            let sharpnessValue = Float(sharpness)
+            let paperWhiteningValue = Float(paperWhitening)
             let result = try await Task.detached(priority: .userInitiated) {
                 let image = try ScanImageProcessor.loadImage(at: url)
                 let detected = try ScanImageProcessor.detectDocument(in: image)
                 let initialQuad = detected ?? .imageBounds
-                let processed = try ScanImageProcessor.process(image, using: initialQuad, filter: filter)
+                let processed = try ScanImageProcessor.process(
+                    image,
+                    using: initialQuad,
+                    filter: filter,
+                    sharpness: sharpnessValue,
+                    paperWhitening: paperWhiteningValue
+                )
                 return (image, detected, processed)
             }.value
             sourceImage = result.0
@@ -190,12 +234,20 @@ struct ScannerEditorView: View {
         let source = sourceImage
         let selectedQuad = quad
         let filter = filter ?? selectedFilter
+        let sharpnessValue = Float(sharpness)
+        let paperWhiteningValue = Float(paperWhitening)
         isProcessing = true
         isDirty = true
         Task {
             do {
                 let output = try await Task.detached(priority: .userInitiated) {
-                    try ScanImageProcessor.process(source, using: selectedQuad, filter: filter)
+                    try ScanImageProcessor.process(
+                        source,
+                        using: selectedQuad,
+                        filter: filter,
+                        sharpness: sharpnessValue,
+                        paperWhitening: paperWhiteningValue
+                    )
                 }.value
                 processedImage = output
                 isDirty = false
@@ -230,6 +282,8 @@ struct ScannerEditorView: View {
 
         let selectedQuad = quad
         let chosenFilter = selectedFilter
+        let chosenSharpness = Float(sharpness)
+        let chosenPaperWhitening = Float(paperWhitening)
         let save: (NSApplication.ModalResponse) -> Void = { response in
             Self.pdfExportLogger.info("NSSavePanel completed with response rawValue=\(response.rawValue, privacy: .public)")
             guard response == .OK else {
@@ -253,6 +307,8 @@ struct ScannerEditorView: View {
                 from: sourceImage,
                 using: selectedQuad,
                 filter: chosenFilter,
+                sharpness: chosenSharpness,
+                paperWhitening: chosenPaperWhitening,
                 securityScopedDirectory: didStartAccess ? destinationFolder : nil
             )
         }
@@ -280,6 +336,8 @@ struct ScannerEditorView: View {
         from sourceImage: CGImage,
         using quad: DocumentQuad,
         filter: ScanFilter,
+        sharpness: Float,
+        paperWhitening: Float,
         securityScopedDirectory: URL?
     ) {
         Self.pdfExportLogger.info("PDF processing and writing started; filter=\(filter.rawValue, privacy: .public)")
@@ -288,7 +346,13 @@ struct ScannerEditorView: View {
             defer { securityScopedDirectory?.stopAccessingSecurityScopedResource() }
             do {
                 try await Task.detached(priority: .userInitiated) {
-                    let corrected = try ScanImageProcessor.process(sourceImage, using: quad, filter: filter)
+                    let corrected = try ScanImageProcessor.process(
+                        sourceImage,
+                        using: quad,
+                        filter: filter,
+                        sharpness: sharpness,
+                        paperWhitening: paperWhitening
+                    )
                     try PDFExporter.write(image: corrected, to: destination)
                 }.value
                 Self.pdfExportLogger.info("PDF processing and writing completed successfully")
