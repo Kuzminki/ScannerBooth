@@ -10,11 +10,11 @@ Dans l’écran de cadrage, faites glisser l’une des quatre poignées (zone de
 
 Sous l’aperçu, le sélecteur **Doc / Gray / N&B** choisit le rendu : couleur avec papier éclairci, niveaux de gris, ou noir et blanc à contraste élevé. Le changement de filtre actualise l’aperçu et s’applique au PDF exporté.
 
-Cliquez sur **Enregistrer le PDF…** puis choisissez un dossier de destination. L’app utilise le sélecteur modal `NSOpenPanel`, puis enregistre le PDF sous le nom `<nom-de-la-photo>_scan.pdf`. Si ce nom existe déjà, elle ajoute un numéro pour ne pas écraser le fichier existant. Le cadrage et le filtre courants sont traités après le choix du dossier; une confirmation apparaît après l’écriture.
+Cliquez sur **Enregistrer le PDF…** pour ouvrir le dialogue d’enregistrement macOS. Le nom proposé est `<nom-de-la-photo>_scan.pdf`, et le champ reste modifiable. Choisissez aussi le dossier de destination; le cadrage et le filtre courants sont traités ensuite. Une confirmation apparaît après l’écriture.
 
 ### Diagnostic de l’export PDF
 
-L’app journalise l’état du bouton Exporter, l’action du clic, l’état des fenêtres avant la présentation, la réponse de `NSOpenPanel`, l’accès au dossier et les erreurs d’écriture dans le journal unifié macOS. Pour suivre ces événements, lancez cette commande dans Terminal avant de cliquer sur **Enregistrer le PDF…**, puis copiez les lignes affichées :
+L’app journalise l’état du bouton Exporter, l’action du clic, l’état des fenêtres avant la présentation, la visibilité et la réponse de `NSSavePanel`, l’accès au dossier et les erreurs d’écriture dans le journal unifié macOS. Pour suivre ces événements, lancez cette commande dans Terminal avant de cliquer sur **Enregistrer le PDF…**, puis copiez les lignes affichées :
 
 ```sh
 log stream --style compact --level info --predicate 'subsystem == "com.guilhem.ScannerBooth" AND category == "PDFExport"'

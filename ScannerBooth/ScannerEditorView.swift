@@ -218,16 +218,44 @@ struct ScannerEditorView: View {
             return
         }
 
-        let panel = NSOpenPanel()
-        panel.title = "Choisir le dossier du PDF"
-        panel.message = "Sélectionnez le dossier de destination du scan PDF."
-        panel.prompt = "Enregistrer ici"
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
+        let panel = NSSavePanel()
+        panel.title = "Enregistrer le scan en PDF"
+        panel.prompt = "Enregistrer"
+        panel.nameFieldStringValue = "\(photo.title)_scan.pdf"
+        panel.allowedContentTypes = [.pdf]
+        panel.isExtensionHidden = false
         panel.canCreateDirectories = true
-        panel.allowsMultipleSelection = false
         panel.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        Self.pdfExportLogger.info("NSOpenPanel configured to choose a PDF destination folder")
+        Self.pdfExportLogger.info("NSSavePanel configured for PDF with an editable default filename")
+
+        let selectedQuad = quad
+        let chosenFilter = selectedFilter
+        let save: (NSApplication.ModalResponse) -> Void = { response in
+            Self.pdfExportLogger.info("NSSavePanel completed with response rawValue=\(response.rawValue, privacy: .public)")
+            guard response == .OK else {
+                Self.pdfExportLogger.info("PDF save panel cancelled")
+                return
+            }
+            guard let destination = panel.url else {
+                Self.pdfExportLogger.error("Save panel returned OK without a destination URL")
+                alertTitle = "Échec de l’enregistrement"
+                errorMessage = "Aucun emplacement de destination n’a été retourné par la fenêtre d’enregistrement."
+                return
+            }
+
+            let destinationFolder = destination.deletingLastPathComponent()
+            let didStartAccess = destinationFolder.startAccessingSecurityScopedResource()
+            Self.pdfExportLogger.info(
+                "PDF destination selected; directory security scope started=\(didStartAccess, privacy: .public)"
+            )
+            exportPDF(
+                to: destination,
+                from: sourceImage,
+                using: selectedQuad,
+                filter: chosenFilter,
+                securityScopedDirectory: didStartAccess ? destinationFolder : nil
+            )
+        }
 
         let keyWindowAvailable = NSApp.keyWindow != nil
         let mainWindowAvailable = NSApp.mainWindow != nil
@@ -237,40 +265,13 @@ struct ScannerEditorView: View {
         )
 
         NSApp.activate(ignoringOtherApps: true)
-        Self.pdfExportLogger.info("Presenting NSOpenPanel with runModal")
-        let response = panel.runModal()
-        Self.pdfExportLogger.info("NSOpenPanel.runModal returned response rawValue=\(response.rawValue, privacy: .public)")
-        guard response == .OK else {
-            Self.pdfExportLogger.info("PDF destination folder selection cancelled")
-            return
+        Self.pdfExportLogger.info("Presenting NSSavePanel with begin(completionHandler:)")
+        panel.begin { response in
+            save(response)
         }
-
-        guard let destinationFolder = panel.url else {
-            Self.pdfExportLogger.error("Destination folder picker returned OK without a URL")
-            alertTitle = "Échec de l’enregistrement"
-            errorMessage = "Aucun dossier de destination n’a été retourné par la fenêtre de sélection."
-            return
-        }
-        guard destinationFolder.startAccessingSecurityScopedResource() else {
-            Self.pdfExportLogger.error("Could not obtain sandbox access to the selected destination folder")
-            alertTitle = "Accès au dossier refusé"
-            errorMessage = "L’app n’a pas obtenu l’autorisation d’écrire dans ce dossier. Choisissez un autre dossier."
-            return
-        }
-
-        let destination = uniquePDFDestination(in: destinationFolder)
-        Self.pdfExportLogger.info("Destination folder access granted; starting PDF processing")
-        exportPDF(to: destination, from: sourceImage, using: quad, filter: selectedFilter, destinationFolder: destinationFolder)
-    }
-
-    private func uniquePDFDestination(in folder: URL) -> URL {
-        let baseName = "\(photo.title)_scan"
-        var suffix = 1
-        while true {
-            let fileName = suffix == 1 ? "\(baseName).pdf" : "\(baseName)_\(suffix).pdf"
-            let candidate = folder.appendingPathComponent(fileName, isDirectory: false)
-            if !FileManager.default.fileExists(atPath: candidate.path) { return candidate }
-            suffix += 1
+        Self.pdfExportLogger.info("NSSavePanel.begin returned")
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+            Self.pdfExportLogger.info("NSSavePanel visibility after presentation delay; visible=\(panel.isVisible, privacy: .public)")
         }
     }
 
@@ -279,12 +280,12 @@ struct ScannerEditorView: View {
         from sourceImage: CGImage,
         using quad: DocumentQuad,
         filter: ScanFilter,
-        destinationFolder: URL
+        securityScopedDirectory: URL?
     ) {
         Self.pdfExportLogger.info("PDF processing and writing started; filter=\(filter.rawValue, privacy: .public)")
         isProcessing = true
         Task {
-            defer { destinationFolder.stopAccessingSecurityScopedResource() }
+            defer { securityScopedDirectory?.stopAccessingSecurityScopedResource() }
             do {
                 try await Task.detached(priority: .userInitiated) {
                     let corrected = try ScanImageProcessor.process(sourceImage, using: quad, filter: filter)
